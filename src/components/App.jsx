@@ -1,6 +1,5 @@
 import React from 'react';
-import { Route, Routes, Navigate, useNavigate } from 'react-router-dom';
-import ProtectedRouteElement from "./ProtectedRoute/ProtectedRoute";
+import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import Main from './Main/Main';
 import Errors from './Errors/Errors';
