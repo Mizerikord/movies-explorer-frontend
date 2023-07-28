@@ -33,19 +33,19 @@
 .slider:before {
     position: absolute;
     content: "";
-    height: 18px;
-    width: 18px;
+    height: 16px;
+    width: 16px;
     left: 4px;
-    bottom: 4px;
+    bottom: 2px;
     background-color: white;
     -webkit-transition: .4s;
     transition: .4s;
-    top: 1px;
+    top: 2px;
     left: 1px;
 }
 
 input:checked+.slider {
-    background-color: #3456F3;
+    background-color: #2BE080;
 }
 
 input:checked+.slider:before {
@@ -65,16 +65,15 @@ input:checked+.slider:before {
     font-size: 13px;
     font-weight: 400;
     line-height: 18px;
-    letter-spacing: 0.06em;
 }
 
-@media screen and (max-width: 1279px) {
+@media screen and (max-width: 800px) {
     .change-box {
         padding: 0 19px;
     }
 }
 
-@media screen and (max-width: 690px) {
+@media screen and (max-width: 500px) {
     .change-box {
         position: absolute;
         top: 108px;

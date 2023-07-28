@@ -9,7 +9,7 @@ function Promo(props) {
         <Routes>
             <Route path="/" element={
                 <section className="title-box">
-                    <h1 className="title">Учебный проект студента факультета Веб-разработки.</h1>
+                    <h1 className="title" lang="ru">Учебный проект студента факультета Веб-разработки.</h1>
                     <NavTab handleClick = {props.handleClick}/>
                 </section>
             }>

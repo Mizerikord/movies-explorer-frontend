@@ -1,4 +1,4 @@
-.register {
+.auth {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -8,25 +8,26 @@
     max-width: 396px;
 }
 
-input, textarea {
+input,
+textarea {
     background-color: #FAFAFA;
-  }
+}
 
-.register-title {
+.auth-title {
     font-family: 'Inter', 'Arial', 'Helvetica', sans-serif;
     font-size: 24px;
     font-weight: 500;
     line-height: 29px;
-    letter-spacing: 0.04em;
+    letter-spacing: 0em;
     text-align: left;
     margin: 40px 0;
 }
 
-.register-form {
+.auth-form {
     display: flex;
     flex-direction: column;
     width: 100%;
-    gap: 24px;
+    gap: 25px;
 }
 
 .form-box {
@@ -38,7 +39,7 @@ input, textarea {
     font-size: 10px;
     font-weight: 400;
     line-height: 12px;
-    letter-spacing: 0.04em;
+    letter-spacing: 0em;
     text-align: left;
     color: #A0A0A0;
     margin: 0 0 5px 0;
@@ -54,7 +55,7 @@ input, textarea {
     font-size: 14px;
     font-weight: 400;
     line-height: 17px;
-    letter-spacing: 0.04em;
+    letter-spacing: 0em;
     text-align: left;
     outline: none;
 }
@@ -69,16 +70,16 @@ input, textarea {
     font-size: 10px;
     font-weight: 400;
     line-height: 14px;
-    letter-spacing: 0.04em;
+    letter-spacing: 0em;
 }
 
-.form-submit {
-    width: 396px;
+.form-submit-login {
+    width: 100%;
     height: 45px;
-    margin-top: 110px;
+    margin-top: 197px;
     background-color: #3456F3;
     border: none;
-    break-before: 3px;
+    border-radius: 3px;
     font-family: 'Inter', 'Arial', 'Helvetica', sans-serif;
     font-size: 14px;
     font-weight: 500;
@@ -86,43 +87,76 @@ input, textarea {
     letter-spacing: 0.05em;
     text-align: center;
     color: #FFFFFF;
+    padding: 0;
 }
 
-.register-msg {
+.auth-msg {
     text-align: center;
     font-family: 'Inter', 'Arial', 'Helvetica', sans-serif;
     font-size: 14px;
     font-weight: 400;
     line-height: 15px;
-    letter-spacing: 0.04em;
+    letter-spacing: 0em;
     margin: 18px 0 0;
     align-self: center;
 }
 
-@media screen and (max-width: 690px) {
-    .register-title {
+.auth-link {
+    text-align: center;
+    font-family: 'Inter', 'Arial', 'Helvetica', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 15px;
+    letter-spacing: 0em;
+    text-decoration: none;
+    color: #3456F3;
+    margin-left: 5px;
+}
+
+@media screen and (max-width: 500px) {
+    .auth {
+        display: flex;
+        align-items: center;
+        height: auto;
+        max-width: 500px;
+        align-self: start;
+    }
+
+    .auth-icon{
+        margin-top: 56px;
+    }
+
+    .auth-title {
         margin: 50px 0;
     }
 
-    .register-form{
+    .auth-form {
         margin-top: 30px;
+        max-width: 260px;
     }
 
     .elem-error {
         line-height: 12px;
     }
 
-    .form-submit {
-        width: 260px;
+    .form-submit-login {
         height: 45px;
-        margin-top: 199px;
+        margin-top: 286px;
         font-size: 12px;
         line-height: 15px;
+        padding: 0;
     }
 
-    .register-msg {
+    .auth-msg {
         font-size: 12px;
         line-height: 15px;
         margin: 14px 0 0;
+        letter-spacing: 0em;
+    }
+
+    .auth-link{
+        font-size: 12px;
+        line-height: 15px;
+        letter-spacing: 0em;
     }
 }

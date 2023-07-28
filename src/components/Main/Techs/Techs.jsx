@@ -6,12 +6,12 @@ function Techs() {
     return (
         <Routes>
             <Route path="/" element={
-                <section className="tech" id='tech'>
+                <section className="tech" id='tech' aria-label="Технологии">
                     <div className="section-header tech__header">
-                        <h2 className="section-title tech-title">Технологии</h2>
+                        <h2 className="section-title tech-title" lang="ru">Технологии</h2>
                     </div>
-                    <h2 className="tech-subtitle">7 технологий</h2>
-                    <p className="tech-text">На курсе веб-разработки мы освоили технологии, которые применили в дипломном проекте.
+                    <h3 className="tech-subtitle" lang="ru">7 технологий</h3>
+                    <p className="tech-text" lang="ru">На курсе веб-разработки мы освоили технологии, которые применили в дипломном проекте.
                     </p>
                     <ul className="tech-list">
                         <li className="tech-item">HTML</li>

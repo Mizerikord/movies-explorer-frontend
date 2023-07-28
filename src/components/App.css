@@ -11,6 +11,7 @@
 
 .link{
     transition: 0.5s;
+    line-height: 0;
 }
 
 .link:hover {

@@ -9,7 +9,7 @@ function Errors(props) {
             <Route path="*" element={
                 <div className="error-not-found">
                     <h2 className="error-name">404</h2>
-                    <p className="error-text">Страница не найдена</p>
+                    <p className="error-text" lang="ru">Страница не найдена</p>
                     <Link href="#" className="error-link">Назад</Link>
                 </div>
             }>

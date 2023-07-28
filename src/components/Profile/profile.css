@@ -4,7 +4,7 @@
     align-items: center;
     width: 100%;
     max-width: 1140px;
-    margin-top: 74px;
+    margin-top: 53px;
 }
 
 .profile__title {
@@ -12,7 +12,7 @@
     font-size: 24px;
     font-weight: 500;
     line-height: 29px;
-    letter-spacing: 0.03em;
+    letter-spacing: 0em;
 }
 
 .form {
@@ -45,7 +45,7 @@
     font-size: 11px;
     font-weight: 500;
     line-height: 13px;
-    letter-spacing: 0.03em;
+    letter-spacing: 0em;
     margin-top: 17px;
 }
 
@@ -59,7 +59,7 @@
     font-size: 11px;
     font-weight: 400;
     line-height: 13px;
-    letter-spacing: 0.01em;
+    letter-spacing: 0em;
     text-align: right;
     box-shadow: none;
     outline: none;
@@ -84,8 +84,8 @@
     font-family: 'Inter', 'Arial', 'Helvetica', sans-serif;
     font-size: 13px;
     font-weight: 400;
-    line-height: 17px;
-    letter-spacing: 0.04em;
+    line-height: 16px;
+    letter-spacing: 0em;
     text-align: center;
     text-decoration: none;
     color: #000000;
@@ -94,4 +94,39 @@
 
 .leave-link {
     color: #EE3465;
+}
+
+@media screen and (max-width: 800px) {
+    .profile{
+        margin-top: 216px;
+    }
+
+    .form {
+        margin-top: 60px;
+    }
+
+    .profile-btns-container {
+        margin: 196px auto 54px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .profile{
+        max-width: 260px;
+        margin-top: 50px;
+    }
+    
+    .form {
+        margin-top: 44px;
+    }
+
+    .profile-btns-container {
+        margin: 364px auto 54px;
+    }
+
+    .profile-link {
+        font-size: 12px;
+        line-height: 15px;
+    }
+
 }

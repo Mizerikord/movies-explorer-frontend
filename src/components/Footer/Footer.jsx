@@ -8,11 +8,11 @@ function Footer(props) {
         <Routes>
             <Route path="*" element={
                 <footer className="footer">
-                <h2 className="footer__title">Учебный проект Яндекс.Практикум х BeatFilm x CCC.</h2>
+                <h2 className="footer__title" lang="ru">Учебный проект Яндекс.Практикум х BeatFilm.</h2>
                 <div className="footer__copy">
                     <p className="year">&copy; 2023</p>
                     <div className="copyright">
-                        <p className="autor">CCC</p>
+                        <p className="autor" lang="ru">CCC</p>
                         <Link to={'https://github.com/Mizerikord/movies-explorer-frontend'} className="author-link link">Github</Link>
                     </div>
                 </div>

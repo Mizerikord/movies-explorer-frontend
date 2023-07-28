@@ -14,13 +14,13 @@ function Movies(props) {
         <CurrentUserContext.Provider value={''}>
             <Routes>
                 <Route path="/" element={
-                    <>
+                    <main className='main'>
                         <SearchForm />
                         <MoviesCardList />
                         <Preloader />
                         <MenuPopup isOpen={props.isOpen} onClose={props.onClose} />
                         <Footer />
-                    </>
+                    </main>
                 } />
             </Routes>
         </CurrentUserContext.Provider>

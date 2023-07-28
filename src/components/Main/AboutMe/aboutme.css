@@ -2,8 +2,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
-    max-width: 1140px;
+    width: 95%;
+    max-width: 1280px;
 }
 
 .student__header {
@@ -15,7 +15,8 @@
 }
 
 .student__info-container {
-    width: 95%;
+    width: 100%;
+    max-width: 1140px;
     display: flex;
     justify-content: space-between;
     gap: 10px;
@@ -73,21 +74,27 @@
     bottom: 0;
 }
 
-.student-foto {
+.student-photo {
     border: none;
     border-radius: 10px;
     background-color: #A0A0A0;
+    min-width: 270px;
     width: 270px;
+    min-height: 327px;
     height: 327px;
     margin: 66px 0 0;
     box-sizing: border-box;
-    overflow: visible
+    overflow: visible;
+    background-size: contain;
+    overflow: hidden;
 }
 
-@media screen and (max-width: 1279px) {
+@media screen and (max-width: 800px) {
     .student {
         max-width: 668px;
+        width: 95%;
     }
+
     .student__header {
         margin-top: 90px;
     }
@@ -101,31 +108,40 @@
         font-size: 40px;
         line-height: 40px;
         margin: 66px 0 0;
+        letter-spacing: -0.04em;
     }
 
     .student-about {
         font-size: 12px;
         line-height: 18px;
-        letter-spacing: 0px;  
-        margin: 16px 0 0;
+        letter-spacing: 0px;
+        margin: 14px 0 0;
+        letter-spacing: -0.04em;
     }
 
     .student-text {
         font-size: 12px;
         line-height: 18px;
-        margin: 20px 0 0;
+        margin: 20px 0 20px;
+        letter-spacing: -0.04em;
     }
 
-    .student-foto {
-        width: 255px;
-        height: 307px;
+    .student-photo {
+        min-width: 255px;
+        min-height: 307px;
+    }
+
+    .git-link {
+        bottom: 2px;
     }
 }
 
-@media screen and (max-width: 690px) {
+@media screen and (max-width: 500px) {
     .student {
         max-width: 320px;
+        width: 100%;
     }
+
     .student__header {
         margin-top: 71px;
         max-width: 292px;
@@ -173,8 +189,10 @@
         margin-top: 40px;
     }
 
-    .student-foto {
+    .student-photo {
+        min-width: 292px;
         width: 292px;
+        min-height: 352px;
         height: 352px;
         margin: 60px 0 0;
     }

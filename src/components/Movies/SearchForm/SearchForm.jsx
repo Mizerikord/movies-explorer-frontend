@@ -1,16 +1,15 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
 import FilterCheckbox from './FilterCheckbox/FilterCheckbox';
 
 function SearchForm() {
 
     return (
-        <section className="search">
+        <section className="search" aria-label="Поиск">
             <div className="search__area">
-                <div className="search-box">
+                <form name="search" className="search-box" noValidate>
                     <input type="text" className="search-elem" placeholder="Фильм"/>
-                    <input type="submit" className="search-sbmt btn-blackout" value=''/>
-                </div>
+                    <button type="submit" className="search-sbmt btn-blackout" value=''/>
+                </form>
                 <FilterCheckbox />
             </div>
             <div className="search__void"></div>

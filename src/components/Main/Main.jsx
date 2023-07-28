@@ -21,13 +21,13 @@ function Main(props) {
             <Header onMenuPopup={props.onMenuPopup} />
             <Routes>
                 <Route path="/" element={
-                    <>
+                    <main className='main'>
                         <Promo />
                         <AboutProject />
                         <Tech />
                         <AboutMe />
                         <Footer />
-                    </>
+                    </main>
                 } />
                 <Route path="/movies" element={<Movies isOpen={props.isOpen} onClose={props.onClose} />} />
                 <Route path="/saved-movies" element={<SavedMovies isOpen={props.isOpen} onClose={props.onClose} />} />

@@ -12,16 +12,22 @@ function Portfolio() {
                     <h3 className="portfolio-header">Портфолио</h3>
                     <ul className="student-links">
                         <li className="student-item">
-                            <p className="link-text">Статичный сайт</p>
-                            <Link href="#" ><img src={arrow} alt="ссылка на Статичный сайт" className="link-icon link" /></Link>
+                            <Link to="https://github.com/Mizerikord/how-to-learn" target='_blanc' className='work-link'>
+                                <p className="link-text">Статичный сайт</p>
+                                <img src={arrow} alt="ссылка на Статичный сайт" className="link-icon link" />
+                            </Link>
                         </li>
                         <li className="student-item">
-                            <p className="link-text">Адаптивный сайт</p>
-                            <Link href="#" ><img src={arrow} alt="ссылка на Адаптивный сайт" className="link-icon link" /></Link>
+                            <Link to="https://github.com/Mizerikord/russian-travel" target='_blanc' className='work-link'>
+                                <p className="link-text">Адаптивный сайт</p>
+                                <img src={arrow} alt="ссылка на Адаптивный сайт" className="link-icon link" />
+                            </Link>
                         </li>
                         <li className="student-item">
-                            <p className="link-text">Одностраничное приложение</p>
-                            <Link href="#" ><img src={arrow} alt="ссылка на Одностраничное приложение" className="link-icon link" /></Link>
+                            <Link to="https://sss.student.nomoredomains.rocks/signin" target='_blanc' className='work-link'>
+                                <p className="link-text">Одностраничное приложение</p>
+                                <img src={arrow} alt="ссылка на Одностраничное приложение" className="link-icon link" />
+                            </Link>
                         </li>
                     </ul>
                 </div>

@@ -1,9 +1,10 @@
 import React from 'react';
 import favourite from '../../../images/favourite.svg';
+import nonefavoureite from '../../../images/none-favourite.svg';
 import { Routes, Route } from 'react-router-dom';
-import testimage from '../../../images/uik.jpg'
+import testimage from '../../../images/uik.jpg';
 
-function MoviesCard() {
+function MoviesCard(props) {
 
     return (
         <Routes>
@@ -11,14 +12,12 @@ function MoviesCard() {
                 <li className="card">
                     <div className="card-info">
                         <div className="card-name">
-                            <h2 className="card-title">33 слова о дизайне</h2>
-                            <p className="card-time">1ч 47м</p>
+                            <h2 className="card-title" lang="ru">33 слова о дизайне</h2>
+                            <p className="card-time" lang="ru">1ч 47м</p>
                         </div>
-                        <img src={favourite} alt="Избранное" className="card-to-favourite btn-blackout" />
+                        <img src={props.favourite ? favourite : nonefavoureite} alt="Избранное" className='card-to-favourite btn-blackout' />
                     </div>
-                    <div className="card-img-container">
-                        <img src={testimage} alt="" className="card-img" />
-                    </div>
+                    <img src={testimage} alt="Некий постер фильма" className="card-img" />
                 </li>
             } />
         </Routes>

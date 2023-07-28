@@ -3,9 +3,9 @@
     display: flex;
     justify-content: center;
     gap: 10px;
-    margin: 0;
     padding: 0;
     margin-bottom: 30px;
+    margin-top: 151px;
 }
 
 .nav-item {
@@ -26,17 +26,28 @@
     font-size: 12px;
     font-weight: 500;
     line-height: 16px;
-    letter-spacing: 0px;
+    letter-spacing: 0em;
 }
 
-@media screen and (max-width: 690px) {
+@media screen and (max-width: 800px) {
+    .nav-list {
+        margin-top: 313px;
+    }
+}
+
+@media screen and (max-width: 500px) {
     .nav-list {
         gap: 6px;
         margin-bottom: 17px;
+        margin-top: 212px;
     }
 
     .nav-item {
         width: 82px;
         height: 26px;
+    }
+
+    .nav-link{
+        font-size: 10px;
     }
 }

@@ -22,7 +22,7 @@
     width: 95%;
     max-width: 1140px;
     padding: 0;
-    margin: 70px 70px auto 70px;
+    margin: 70px auto 70px;
 }
 
 .project-item {
@@ -88,13 +88,14 @@
     background-color: #f2f2f2;
 }
 
-@media screen and (max-width: 1279px) {
+@media screen and (max-width: 800px) {
     .about {
         max-width: 768px;
+        width: 95%;
     }
 
     .about__header {
-        margin-top: 67px;
+        margin-top: 68px;
     }
 
     .about-title {
@@ -114,6 +115,7 @@
 
     .project-subtitle{
         max-width: 319px;
+        letter-spacing: -0.04em;
     }
 
     .project-text {
@@ -121,33 +123,35 @@
         line-height: 18px;
         max-width: 319px;
         margin: 22px 0 0;
+        letter-spacing: 0em;
     }
 
     .project-line-container {
         max-width: 668px;
-        margin: 90px 0 85px;
+        margin: 22px 0 85px 0;
         width: 100%;
     }
 }
 
-@media screen and (max-width: 690px) {
+@media screen and (max-width: 500px) {
     .about {
         width: 100%;
         max-width: 320px;
     }
 
     .about__header {
-        margin-top: 42px;
+        margin-top: 47px;
+        padding-bottom: 3px;
     }
 
     .about-title {
-        margin: 28px 0;
+        margin: 24px 0;
     }
 
     .project-list {
         max-width: 284px;
         flex-direction: column;
-        margin-top: 60px;
+        margin: 60px 0 0;
         justify-content: flex-start;
         align-items: flex-start;
         gap: 56px;

@@ -2,8 +2,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
     min-height: 74px;
+    width: 100%;
     max-width: 1280px;
 }
 
@@ -48,7 +48,6 @@
     font-size: 14px;
     font-weight: 500;
     line-height: 16px;
-    letter-spacing: 0.06em;
     text-align: center;
     transition: 0.5s;
     cursor: pointer;
@@ -83,14 +82,14 @@
 .film-link {
     display: flex;
     justify-content: flex-start;
-    gap: 16px;
+    gap: 20px;
 }
 
 .login-link {
     font-family: 'Inter', 'Arial', 'Helvetica', sans-serif;
     font-size: 12px;
     font-weight: 500;
-    line-height: 16px;
+    line-height: 17px;
     letter-spacing: 0.04em;
     text-align: right;
     text-decoration: none;
@@ -98,7 +97,7 @@
 }
 
 .login-link-saved {
-    letter-spacing: 0.07em;
+    letter-spacing: 0.04em;
 }
 
 .login-link_active {
@@ -107,7 +106,7 @@
 
 
 
-@media screen and (max-width: 1279px) {
+@media screen and (max-width: 800px) {
     .header {
         max-width: 768px;
     }
@@ -130,11 +129,12 @@
         justify-content: flex-start;
         background-color: #FAFAFA;
         width: 28px;
-        height: 20px;
+        height: 18px;
         border-top: 3px solid #000000;
         border-bottom: 3px solid #000000;
         cursor: pointer;
         padding: 0;
+        margin-right: 7px;
     }
 
     .menu-line{
@@ -147,7 +147,7 @@
     }
 }
 
-@media screen and (max-width: 690px) {
+@media screen and (max-width: 500px) {
 
     .header {
         min-height: 74px;
@@ -189,5 +189,6 @@
 
     .login-link {
         font-size: 10px;
+        letter-spacing: 0em;
     }
 }

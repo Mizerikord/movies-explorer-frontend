@@ -1,10 +1,9 @@
 import { Route, Routes } from 'react-router-dom';
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import './navtab.css';
 import AboutProject from '../AboutProject/AboutProject';
 import Techs from '../Techs/Techs';
 import AboutMe from '../AboutMe/AboutMe';
-import { HashLink as Link } from 'react-router-hash-link';
 
 function NavTab(props) {
     return (
