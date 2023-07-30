@@ -1,0 +1,29 @@
+.page {
+    background-color: #FAFAFA;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    position: relative;
+}
+
+.link{
+    transition: 0.5s;
+    line-height: 0;
+}
+
+.link:hover {
+    opacity: 70%;
+    transition: 0.5s;
+}
+
+.btn-blackout{
+    transition: 0.5s;
+}
+
+.btn-blackout:hover {
+    transition: 0.5s;
+    opacity: 80%;
+}
