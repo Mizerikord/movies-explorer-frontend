@@ -33,19 +33,13 @@ function Profile(props) {
                             <h2 className="profile__title" lang="ru">Привет, Виталий!</h2>
                             <form name="profile" className="form" noValidate>
                                 <label className="form__box underline">
-                                    <div className="form-wrapper">
                                         <p className="input-name" lang="ru">Имя:</p>
-                                        <input type="text" name="name" id=""
-                                            className="form__elem form__elem_name" placeholder="Ваше имя" />
-                                    </div>
+                                        <input type="text" name="name" className="form__elem form__elem_name" placeholder="Ваше имя" />
                                     <span className="name-error profile-elem-error"></span>
                                 </label>
                                 <label className="form__box">
-                                    <div className="form-wrapper">
                                         <p className="input-name" lang="en">E-mail:</p>
-                                        <input type="email" name="email" id=""
-                                            className="form__elem form__elem_email" placeholder="Ваш e-mail" />
-                                    </div>
+                                        <input type="email" name="email" className="form__elem form__elem_email" placeholder="Ваш e-mail" />
                                     <span className="email-error profile-elem-error"></span>
                                 </label>
                             </form>
