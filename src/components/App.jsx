@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes, useNavigate, useLocation } from 'react-router-dom';
 import './App.css';
 import Main from './Main/Main';
 import Errors from './Errors/Errors';
@@ -24,7 +24,6 @@ function App() {
   const [isOpen, setPopupOpen] = useState(false);
   const [loggedIn, setloggedIn] = useState(false);
   const [movies, setMovies] = useState([]);
-  const [isTokenVerified, setIsTokenVerified] = useState(false);
   const [checked, setChecked] = useState(false);
   const [isFavourite, setFavourite] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -33,6 +32,11 @@ function App() {
   localStorage.short = checked;
 
   const navigate = useNavigate();
+  let location = useLocation();
+//сброс оповещения при редиректе
+  useEffect(()=>{
+    setMessage("");
+  }, [location])
 
   const handleMenuPopup = () => {
     setPopupOpen(true);
@@ -51,11 +55,9 @@ function App() {
     MainApi.getUserData(jwt)
       .then((data) => {
         if (data) {
-
-          getSavedMovies();
           setcurrentUser(data);
-          setIsTokenVerified(true);
           setloggedIn(true);
+          getSavedMovies();
         } else {
           setloggedIn(false);
           localStorage.removeItem('jwt');
@@ -66,10 +68,6 @@ function App() {
       })
   }
 
-  //Запуск проверки токена при изменении статуса пользователя
-  useEffect(() => {
-    handleCheckToken();
-  }, [loggedIn])
 
   //Редирект при изменении статуса пользователя
   useEffect(() => {
@@ -79,7 +77,10 @@ function App() {
     return;
   }, [loggedIn]);
 
-
+  //Запуск проверки токена при изменении статуса пользователя
+  useEffect(() => {
+    handleCheckToken();
+  }, [loggedIn])
 
   //Получение данных пользователя
   useEffect(() => {
@@ -120,7 +121,6 @@ function App() {
     const currentUserData = userData;
     MainApi.postNewUser(userData)
       .then((userData) => {
-        console.log(userData);
         if (userData) {
           handleUserAutorization({
             email: currentUserData.email, password: currentUserData.password
@@ -140,10 +140,11 @@ function App() {
     setIsLoading(true);
     MainApi.patchUserData(userData)
       .then((res) => {
+        setcurrentUser(res);
         setMessage('Данные успешно обновлены');
         setIsLoading(false);
       })
-      .catch(err=>{
+      .catch(err => {
         if (err === "409") {
           setMessage("Пользователь с таким email уже существует.");
           setIsLoading(false);
@@ -157,6 +158,7 @@ function App() {
   //Выход из аккаунта
   function handleSignOut() {
     setloggedIn(false);
+    setMovies([]);
     localStorage.removeItem('jwt');
     localStorage.removeItem('movies');
     localStorage.removeItem('short');
@@ -180,7 +182,7 @@ function App() {
           //для лучшего результата ищем данные по всем полям
           return searchElem.includes(localStorage.searchText);
         })
-        if(result.length === 0){
+        if (result.length === 0) {
           setMessage("К сожалению, ничего не нашлось ):")
           return
         }
@@ -207,8 +209,8 @@ function App() {
   //Добавление карточки в избранное и удаление
   function handleToggleStatusCard(movieCard) {
     if (isFavourite.some(i => i.movieId === movieCard.movieId)) {
-      const deletedCard = isFavourite.filter((elem) => elem.movieId === movieCard.movieId)
-      MainApi.deleteMovie(deletedCard[0])
+      const [deletedCard] = isFavourite.filter((elem) => elem.movieId === movieCard.movieId)
+      MainApi.deleteMovie(deletedCard)
         .then(res => {
           handleSearchMovies(localStorage.searchText);
           return;
@@ -227,7 +229,6 @@ function App() {
       image: movieCard.image,
       trailerLink: movieCard.trailerLink,
       thumbnail: movieCard.image,
-      owner: movieCard.owner,
       nameRU: movieCard.nameRU,
       nameEN: movieCard.nameEN,
       owner: currentUser._id,
@@ -251,7 +252,7 @@ function App() {
   }
 
   //Очищаем сообщения об ошибках в профиле
-  function handleReset(){
+  function handleReset() {
     setMessage("");
     setIsLoading(false);
   }
@@ -305,7 +306,7 @@ function App() {
           <Route path="*" element={<Errors />} />
         </Routes>
         <Footer />
-        <Preloader isLoading={isLoading} message={message} onReset={handleReset}/>
+        <Preloader isLoading={isLoading} message={message} onReset={handleReset} />
         <MenuPopup isOpen={isOpen} onClose={closeAllPopups} />
       </CurrentUserContext.Provider>
     </div>

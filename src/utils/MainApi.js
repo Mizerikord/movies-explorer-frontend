@@ -26,7 +26,6 @@ class MainApi {
 
     // Создание пользователя
     postNewUser(userData) {
-        console.log(userData);
         return fetch(`${this._auth}/signup`, {
             method: 'POST',
             headers: {
@@ -65,7 +64,6 @@ class MainApi {
 
     // Создание новой карточки
     postNewMovie(newMovieData) {
-        console.log(newMovieData);
         return fetch(`${this._addres}/movie`, {
             method: 'POST',
             headers: {
