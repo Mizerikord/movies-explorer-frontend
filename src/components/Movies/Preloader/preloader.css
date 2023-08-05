@@ -40,7 +40,7 @@
 }
 
 .preloader {
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
     width: 100%;
@@ -48,15 +48,25 @@
     z-index: 10;
     padding: 20px;
     position: fixed;
+}
 
-    /* временно скрываем прелоедер */
-    display: none;
+.preloader_disactive{
+    display: flex;
 }
 
 .preloader__container {
     width: 100px;
     height: 100px;
     position: relative;
+}
+
+.preloader__container-msg{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+    text-align: center;
+    align-items: center;
 }
 
 .preloader__round {
@@ -67,6 +77,17 @@
     left: 0;
     background: #3456F3;
     border-radius: 50px;
+}
+
+.preloader__not-found{
+    color: #EE3465;
+    width: 100%;
+    font-family: 'Inter', 'Arial', 'Helvetica', sans-serif;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 17px;
+    letter-spacing: 0em;
+    text-align: center;
 }
 
 .preloader__round::after,

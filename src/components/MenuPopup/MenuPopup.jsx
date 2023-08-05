@@ -12,7 +12,7 @@ function MenuPopup({ isOpen, onClose }) {
                 <li className="popup-item" onClick={onClose}><Link to='/movies' className="popup-link">Фильмы</Link></li>
                 <li className="popup-item" onClick={onClose}><Link to='/saved-movies' className="popup-link">Сохраненные фильмы</Link></li>
             </ul>
-            <Link to='/profile' className="popup-btn link" >Аккаунт</Link>
+            <Link to='/profile' className="popup-btn link" onClick={onClose}>Аккаунт</Link>
         </div>
     )
 };

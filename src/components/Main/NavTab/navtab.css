@@ -29,7 +29,7 @@
     letter-spacing: 0em;
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 810px) {
     .nav-list {
         margin-top: 313px;
     }

@@ -1,12 +1,11 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
 
-function FilterCheckbox() {
+function FilterCheckbox(props) {
 
     return (
         <div className="change-box">
             <label className="switch">
-                <input type="checkbox" id="" className="checkbox"  />
+                <input type="checkbox" className="checkbox" checked={props.check} onChange={props.onCheck}/>
                 <span className="slider round"></span>
             </label>
             <p className="search-change-text">Короткометражки</p>

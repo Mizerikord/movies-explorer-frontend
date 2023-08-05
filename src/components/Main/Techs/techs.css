@@ -108,7 +108,7 @@
     width: 80%;
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 810px) {
     .tech__header {
         margin-top: 55px;
     }

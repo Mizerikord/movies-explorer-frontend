@@ -55,6 +55,14 @@
     height: 30px;
     cursor: pointer;
     transition: 0.5s;
+    background-image: url('../../../images/none-favourite.svg');
+    border: none;
+    border-radius: 50%;
+    outline: none;
+}
+
+.card-to-favourite_active{
+    background-image: url('../../../images/favourite.svg');
 }
 
 .card-img {
@@ -63,7 +71,12 @@
     width: 100%;
 }
 
-@media screen and (max-width: 800px) {
+.trailer-link{
+    text-decoration: none;
+    width: 100%;
+}
+
+@media screen and (max-width: 810px) {
     .card {
         max-width: 339px;
         max-height: 258px;

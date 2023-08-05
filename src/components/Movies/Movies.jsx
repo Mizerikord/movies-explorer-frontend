@@ -1,29 +1,30 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
 import SearchForm from './SearchForm/SearchForm';
 import MoviesCardList from './MoviesCardList/MoviesCardList';
 import Preloader from './Preloader/Preloader';
-import { CurrentUserContext } from '../../context/CurrentUserContext';
 import MenuPopup from '../MenuPopup/MenuPopup';
-import Footer from '../Footer/Footer';
 
 
 function Movies(props) {
 
+    let movies = props.movies;
+
+    if (props.check) {
+        movies = movies.filter((elem) => {
+            if (elem.duration >= 40) {
+                return false
+            }
+            return elem
+        })
+    }
+
     return (
-        <CurrentUserContext.Provider value={''}>
-            <Routes>
-                <Route path="/" element={
-                    <main className='main'>
-                        <SearchForm />
-                        <MoviesCardList />
-                        <Preloader />
-                        <MenuPopup isOpen={props.isOpen} onClose={props.onClose} />
-                        <Footer />
-                    </main>
-                } />
-            </Routes>
-        </CurrentUserContext.Provider>
+        <main className='main'>
+            <SearchForm onSearch={props.onSearch} check={props.check} onCheck={props.onCheck}/>
+            <MoviesCardList cards={movies} onFavourite={props.onFavourite} onSaved={props.onSaved} isFavourite={props.isFavourite} />
+            <Preloader />
+            <MenuPopup isOpen={props.isOpen} onClose={props.onClose} />
+        </main>
     );
 }
 

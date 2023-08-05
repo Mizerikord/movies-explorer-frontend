@@ -67,7 +67,7 @@ input:checked+.slider:before {
     line-height: 18px;
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 810px) {
     .change-box {
         padding: 0 19px;
     }

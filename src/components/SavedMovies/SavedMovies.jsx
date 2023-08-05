@@ -1,28 +1,29 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
-import { CurrentUserContext } from "../../context/CurrentUserContext"
 import MoviesCardList from '../Movies/MoviesCardList/MoviesCardList';
 import Preloader from '../Movies/Preloader/Preloader';
 import SearchForm from '../Movies/SearchForm/SearchForm';
 import MenuPopup from '../MenuPopup/MenuPopup';
-import Footer from '../Footer/Footer';
 
 function SavedMovies(props) {
+    
+    let isFavourite = props.isFavourite;
+
+    if (props.check) {
+        isFavourite = isFavourite.filter((elem) => {
+            if (elem.duration >= 40) {
+                return false
+            }
+            return elem
+        })
+    }
 
     return (
-        <CurrentUserContext.Provider value={''}>
-            <Routes>
-                <Route path="/" element={
-                    <>
-                        <SearchForm />
-                        <MoviesCardList />
-                        <Preloader />
-                        <MenuPopup isOpen={props.isOpen} onClose={props.onClose} />
-                        <Footer />
-                    </>
-                } />
-            </Routes>
-        </CurrentUserContext.Provider>
+        <>
+            <SearchForm onSearch={props.onSearch} check={props.check} onCheck={props.onCheck} />
+            <MoviesCardList cards={isFavourite} isFavourite={props.isFavourite} onFavourite={props.onFavourite} onSaved={props.onSaved} />
+            <Preloader />
+            <MenuPopup isOpen={props.isOpen} onClose={props.onClose} />
+        </>
     );
 }
 

@@ -1,4 +1,5 @@
-input, textarea {
+input,
+textarea {
     background-color: #FAFAFA;
 }
 
@@ -79,7 +80,7 @@ input:-webkit-autofill {
 .form-submit {
     width: 396px;
     height: 45px;
-    margin-top: 109px;
+    margin-top: 126px;
     background-color: #3456F3;
     border: none;
     break-before: 3px;
@@ -114,6 +115,22 @@ input:-webkit-autofill {
     letter-spacing: 0.04em;
 }
 
+.btn-register-disabled {
+    width: 396px;
+    height: 45px;
+    margin-top: 126px;
+    background-color: #F8F8F8;
+    border: none;
+    break-before: 3px;
+    font-family: 'Inter', 'Arial', 'Helvetica', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 17px;
+    letter-spacing: 0em;
+    text-align: center;
+    color: #FFFFFF;
+}
+
 @media screen and (max-width: 500px) {
     .auth {
         align-self: start;
@@ -127,9 +144,13 @@ input:-webkit-autofill {
     .form-submit {
         width: 260px;
         height: 45px;
-        margin-top: 199px;
+        margin-top: 216px;
         font-size: 12px;
         line-height: 15px;
+    }
+
+    .btn-register-disabled {
+        margin-top: 216px;
     }
 
     .auth-msg {

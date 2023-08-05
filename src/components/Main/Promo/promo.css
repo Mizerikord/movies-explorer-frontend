@@ -21,7 +21,7 @@
     margin: 160px auto 151px;
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 810px) {
     .title-box {
         max-width: 728px;
         width: 95%;
