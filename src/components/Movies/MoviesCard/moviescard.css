@@ -64,6 +64,9 @@
 .card-to-favourite_active{
     background-image: url('../../../images/favourite.svg');
 }
+.card-to-favourite_delete{
+    background-image: url('../../../images/delete.svg');
+}
 
 .card-img {
     background-size: contain;

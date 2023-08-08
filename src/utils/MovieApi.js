@@ -1,6 +1,7 @@
 class MovieApi {
-    constructor({baseUrl}){
+    constructor({baseUrl, headers}){
         this._addres = baseUrl;
+        this._headers = headers;
     }
 
     _getAnswer(res) {
@@ -21,12 +22,10 @@ class MovieApi {
 }
 
 const movieApi = new MovieApi({
-    baseUrl: 'https://api.nomoreparties.co/beatfilm-movies'
-    // headers: {
-    //     'authorization': `Bearer ${localStorage.getItem('jwt')}`,
-    //     'Content-Type': 'application/json'
-    // },
-    // auth: 'http://localhost:3001'
+    baseUrl: 'https://api.nomoreparties.co/beatfilm-movies',
+    headers: {
+        'Content-Type': 'application/json'
+    },
 });
 
 export default movieApi

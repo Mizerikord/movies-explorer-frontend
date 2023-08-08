@@ -17,68 +17,55 @@ import ProtectedRouteElement from './ProtectedRoute/ProtectedRoute';
 import movieApi from '../utils/MovieApi.js';
 import Preloader from './Movies/Preloader/Preloader';
 import MenuPopup from './MenuPopup/MenuPopup';
+import constants from '../utils/constants';
 
 function App() {
 
   const [currentUser, setcurrentUser] = useState({ name: "", email: "" });
   const [isOpen, setPopupOpen] = useState(false);
   const [loggedIn, setloggedIn] = useState(false);
-  const [movies, setMovies] = useState([]);
-  const [checked, setChecked] = useState(false);
-  const [isFavourite, setFavourite] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [message, setMessage] = useState("");
+  const [isTokenVerified, setIsTokenVerified] = useState(false);
 
-  localStorage.short = checked;
+  const [searchMovies, setSearchMovies] = useState([]);
+  const [movies, setMovies] = useState([]);
+
+  const [isChecked, setIsChecked] = useState(false);
+  const [isSavedChecked, setIsSavedChecked] = useState(false);
+
+  const [isSearchFavourite, setSearchFavourite] = useState([]);
+  const [isFavourite, setFavourite] = useState([]);
+  const [isFilteredFavourite, setIsFilteredFavourite] = useState([]);
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [message, setMessage] = useState("");
 
   const navigate = useNavigate();
   let location = useLocation();
-//сброс оповещения при редиректе
-  useEffect(()=>{
-    setMessage("");
-  }, [location])
 
-  const handleMenuPopup = () => {
-    setPopupOpen(true);
-  }
-
-  const closeAllPopups = () => {
-    setPopupOpen(false);
-  }
-
-  //проверка токена
-  function handleCheckToken() {
-    const jwt = localStorage.getItem('jwt');
-    if (!jwt) {
-      return
-    }
-    MainApi.getUserData(jwt)
-      .then((data) => {
-        if (data) {
-          setcurrentUser(data);
-          setloggedIn(true);
-          getSavedMovies();
-        } else {
-          setloggedIn(false);
-          localStorage.removeItem('jwt');
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-  }
-
-
-  //Редирект при изменении статуса пользователя
+  //Запуск проверки токена
   useEffect(() => {
-    if (loggedIn) {
-      navigate('/movies');
+    function handleCheckToken() {
+      const jwt = localStorage.getItem('jwt');
+      if (!jwt) {
+        setIsTokenVerified(true)
+        return
+      }
+      MainApi.getUserData(jwt)
+        .then((data) => {
+          if (data) {
+            setcurrentUser(data);
+            setloggedIn(true);
+            getSavedMovies();
+            setIsTokenVerified(true)
+          } else {
+            setloggedIn(true);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        })
     }
-    return;
-  }, [loggedIn]);
-
-  //Запуск проверки токена при изменении статуса пользователя
-  useEffect(() => {
     handleCheckToken();
   }, [loggedIn])
 
@@ -99,6 +86,7 @@ function App() {
 
   //Авторизация
   function handleUserAutorization(userData) {
+    setIsLoading(true);
     MainApi.postUserAutorization(userData)
       .then((userData) => {
         if (userData) {
@@ -107,18 +95,47 @@ function App() {
           setloggedIn(true);
           navigate('/movies');
         } else {
-          setloggedIn(false);
+          setloggedIn(true);
         }
+        setIsLoading(false);
       })
       .catch((err) => {
         console.log(err);
         setloggedIn(false);
+        setMessage(`При авторизации произошла ошибка, попробуйте позже`);
       })
+  }
+
+  //сброс оповещения при редиректе
+  useEffect(() => {
+    if (location.pathname === "/movies") {
+      setIsChecked(localStorage.short === "true" ? true : false)
+      if (localStorage.movies != undefined) {
+        const findedMovies = JSON.parse(localStorage.movies);
+        setMovies(findedMovies);
+        setSearchMovies(findedMovies);
+      }
+    }
+    if (location.pathname === "/saved-movies") {
+      getSavedMovies();
+      setFavourite(isSearchFavourite);
+      setIsFilteredFavourite(isSearchFavourite);
+    }
+    setMessage("");
+  }, [location])
+
+  const handleMenuPopup = () => {
+    setPopupOpen(true);
+  }
+
+  const closeAllPopups = () => {
+    setPopupOpen(false);
   }
 
   //Регистрация пользователя
   function handleUserRegistration(userData) {
     const currentUserData = userData;
+    setIsLoading(true);
     MainApi.postNewUser(userData)
       .then((userData) => {
         if (userData) {
@@ -126,12 +143,16 @@ function App() {
             email: currentUserData.email, password: currentUserData.password
           });
         } else {
-          setloggedIn(false);
+          setloggedIn(true);
         }
+        setIsLoading(true);
       })
       .catch((err) => {
-        console.log(err);
-        setloggedIn(false);
+        if (err === "409") {
+          setMessage("Пользователь с таким email уже существует.");
+          return;
+        }
+        setMessage(`При регистрации профиля произошла ${err} ошибка, попробуйте позже`);
       })
   }
 
@@ -142,83 +163,154 @@ function App() {
       .then((res) => {
         setcurrentUser(res);
         setMessage('Данные успешно обновлены');
-        setIsLoading(false);
       })
       .catch(err => {
         if (err === "409") {
           setMessage("Пользователь с таким email уже существует.");
-          setIsLoading(false);
           return;
         }
         setMessage(`При обновлении профиля произошла ошибка, попробуйте позже`);
-        setIsLoading(false);
       })
   }
 
   //Выход из аккаунта
   function handleSignOut() {
     setloggedIn(false);
-    setMovies([]);
     localStorage.removeItem('jwt');
     localStorage.removeItem('movies');
     localStorage.removeItem('short');
     localStorage.removeItem('searchText');
+    setMessage("");
+    setMovies([]);
+    setSearchMovies([]);
+    setFavourite([]);
+    setIsFilteredFavourite([]);
+    setSearchFavourite([]);
+    setSearchMovies([]);
     navigate('/');
   }
 
   //Получение списка фильмов
-  function handleSearchMovies() {
+  function handleSearchMovies(data) {
     setIsLoading(true);
-    getSavedMovies();
     movieApi.getMovies()
       .then((movies) => {
-        const result = movies.filter((elem) => {
-          //меняем данные подстать базе
-          elem.movieId = elem.id;
-          delete elem["id"];
-          elem.image = `https://api.nomoreparties.co${elem.image.url}`;
-          //делаем регистронезависымый поиск
-          const searchElem = Object.values(elem).join("").toLowerCase();
-          //для лучшего результата ищем данные по всем полям
-          return searchElem.includes(localStorage.searchText);
-        })
+        const result = filterOnSearch(movies, data);
         if (result.length === 0) {
           setMessage("К сожалению, ничего не нашлось ):")
-          return
+          setMovies(filterOnShort(isChecked, result));
+          localStorage.short = isChecked;
+          localStorage.movies = JSON.stringify(result);
+          return;
         }
         setIsLoading(false);
-        setMovies(result);
-        localStorage.movies = JSON.stringify(result);
+        localStorage.movies = JSON.stringify(filterOnShort(isChecked, result));
+        localStorage.short = isChecked;
+        setSearchMovies(result);
+        setMovies(filterOnShort(isChecked, result));
       })
       .catch((res) => {
         console.log(res)
       })
   }
 
-  //Включение фильтра короткометражек
-  function handleChecked() {
-    if (checked) {
-      setChecked(false);
-      handleSearchMovies();
+  //Поиск из сохраненных видео
+  function handleSearchSavedMovies(data) {
+    setIsLoading(true);
+    const result = filterOnSearch(isSearchFavourite, data);
+    if (result.length === 0) {
+      setMessage("К сожалению, ничего не нашлось ):")
+      setFavourite(result);
       return;
     }
-    setChecked(true);
-    handleSearchMovies();
+    setIsFilteredFavourite(result);
+    setFavourite(filterOnShort(isSavedChecked, result));
+    setIsLoading(false);
+  }
+
+  //получаем сохраненные фильмы
+  function getSavedMovies() {
+    setIsLoading(true);
+    MainApi.getMovies()
+      .then((res) => {
+        setSearchFavourite(res);
+        setIsLoading(false);
+      })
+      .catch(err => {
+        console.log(err.status);
+        setIsLoading(false);
+      })
+  }
+
+  //Фильтрация по поисковой строке
+  function filterOnSearch(videoElem, searchText) {
+    const result = videoElem.filter((elem) => {
+      if (elem["id"] != undefined) {
+        //меняем данные подстать базе
+        elem.movieId = elem.id;
+        delete elem["id"];
+        elem.image = constants.imgUrl + elem.image.url;
+      }
+      //делаем регистронезависымый поиск
+      const searchElem = Object.values(elem).join("").toLowerCase();
+      //для лучшего результата ищем данные по всем полям
+      return searchElem.includes(searchText);
+    })
+    return result
+  }
+
+  //фильтрация которких видео
+  function filterOnShort(check, video) {
+    let result = video;
+    result = result.filter((elem) => {
+      if (check && elem.duration >= constants.short) {
+        return false;
+      }
+      return true;
+    })
+    return result;
+  }
+
+  //Включение фильтра короткометражек
+  function handleChecked() {
+    if (isChecked) {
+      setIsChecked(false);
+      setMovies(filterOnShort(!isChecked, searchMovies));
+      return;
+    }
+    setIsChecked(true);
+    setMovies(filterOnShort(!isChecked, searchMovies));
+  }
+
+  //Включение фильтра короткометражек для сохраненных фильмов
+  function handleSavedChecked() {
+    if (isSavedChecked) {
+      setIsSavedChecked(false);
+      setFavourite(filterOnShort(!isSavedChecked, isFilteredFavourite));
+      return;
+    }
+    setIsSavedChecked(true);
+    setFavourite(filterOnShort(!isSavedChecked, isFilteredFavourite));
   }
 
   //Добавление карточки в избранное и удаление
   function handleToggleStatusCard(movieCard) {
-    if (isFavourite.some(i => i.movieId === movieCard.movieId)) {
-      const [deletedCard] = isFavourite.filter((elem) => elem.movieId === movieCard.movieId)
+    const filterFavourite = isSearchFavourite;
+    if (isSearchFavourite.some(i => i.movieId === movieCard.movieId)) {
+      const [deletedCard] = filterFavourite.filter((elem) => elem.movieId === movieCard.movieId)
       MainApi.deleteMovie(deletedCard)
         .then(res => {
-          handleSearchMovies(localStorage.searchText);
+          let movieId = isSearchFavourite.map(elem => {
+            return elem.movieId
+          }).indexOf(res.data.movieId);
+          isSearchFavourite.splice(movieId, 1);
+          setSearchFavourite(isSearchFavourite);
+          setFavourite(filterFavourite.filter((elem) => !(elem.movieId === movieCard.movieId)));
           return;
         })
         .catch(res => console.log(res.status));
       return;
     }
-
     MainApi.postNewMovie({
       movieId: movieCard.movieId,
       country: movieCard.country,
@@ -236,19 +328,13 @@ function App() {
       updated_at: movieCard.updated_at,
     })
       .then((newMovie) => {
-        //Строка поиска из localStorage
-        handleSearchMovies(localStorage.searchText)
+        //обновляем данные
+        newMovie.movieId = movieCard.movieId;
+        isSearchFavourite.push(newMovie);
+        setSearchFavourite(isSearchFavourite);
+        setMovies(JSON.parse(localStorage.movies));
       })
       .catch(res => console.log(res.status))
-  }
-
-  //сохраняем фильмы
-  function getSavedMovies() {
-    MainApi.getMovies()
-      .then((res) => {
-        setFavourite(res);
-      })
-      .catch(err => console.log(err.status))
   }
 
   //Очищаем сообщения об ошибках в профиле
@@ -257,57 +343,60 @@ function App() {
     setIsLoading(false);
   }
 
-  return (
+  return (isTokenVerified &&
     <div className="page">
       <CurrentUserContext.Provider value={currentUser}>
-        <Header onMenuPopup={handleMenuPopup} />
+        <Header onMenuPopup={handleMenuPopup} loggedIn={loggedIn} />
         <Routes>
+          <Route path="/signin" element={<Login onLogin={handleUserAutorization} />} />
+          <Route path="/signup" element={<Register onRegister={handleUserRegistration} />} />
           <Route
             path="/"
             element={<Main
               onClose={closeAllPopups}
+
             />} />
           <Route
             path="/movies"
             element={<ProtectedRouteElement
-              component={Movies}
               loggedIn={loggedIn}
+              component={Movies}
               movies={movies}
               onSearch={handleSearchMovies}
-              check={checked}
+              check={isChecked}
               onCheck={handleChecked}
               onFavourite={handleToggleStatusCard}
-              isFavourite={isFavourite}
+              isFavourite={isSearchFavourite}
             />} />
           <Route
             path="/saved-movies"
             element={<ProtectedRouteElement
-              component={SavedMovies}
               loggedIn={loggedIn}
-              onSearch={handleSearchMovies}
-              check={checked}
-              onCheck={handleChecked}
+              component={SavedMovies}
+              onCheck={handleSavedChecked}
+              check={isSavedChecked}
+              onSearch={handleSearchSavedMovies}
               onFavourite={handleToggleStatusCard}
-              isFavourite={isFavourite} />
+              isFavourite={isSearchFavourite}
+              cards={isFavourite} />
             } />
           <Route
             path="/profile"
             element={<ProtectedRouteElement
-              component={Profile}
               loggedIn={loggedIn}
+              component={Profile}
               onEdit={handleProfileEditor}
-              message={message}
               onSignOut={handleSignOut}
               onReset={handleReset}
             />
             } />
-          <Route path="/signin" element={<Login onLogin={handleUserAutorization} />} />
-          <Route path="/signup" element={<Register onRegister={handleUserRegistration} />} />
-          <Route path="*" element={<Errors />} />
+          <Route path="*" element={<Errors navigate={navigate} />} />
         </Routes>
         <Footer />
         <Preloader isLoading={isLoading} message={message} onReset={handleReset} />
-        <MenuPopup isOpen={isOpen} onClose={closeAllPopups} />
+        <MenuPopup
+          isOpen={isOpen}
+          onClose={closeAllPopups} />
       </CurrentUserContext.Provider>
     </div>
   );

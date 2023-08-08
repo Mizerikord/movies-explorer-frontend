@@ -1,10 +1,9 @@
 import React from 'react';
-import { Link } from "react-router-dom";
-import { CurrentUserContext } from "../../../context/CurrentUserContext";
+import { Link, useLocation } from "react-router-dom";
 
 function MoviesCard(props) {
 
-    const currentUser = React.useContext(CurrentUserContext);
+    let location = useLocation();
 
     const card = props.card;
 
@@ -20,10 +19,12 @@ function MoviesCard(props) {
     }
 
     const isSave = props.isFavourite.some(i => i.movieId === card.movieId);
+    const favourite = location.pathname === "/movies" ?
+        (`card-to-favourite btn-blackout ${isSave ? "card-to-favourite_active" : ""}`) :
+        (`card-to-favourite btn-blackout ${isSave ? "card-to-favourite_delete" : ""}`);
 
-    const favourite = (
-        `card-to-favourite btn-blackout ${isSave ? "card-to-favourite_active" : ""}`
-    );
+
+
 
     return (
         <li className="card">

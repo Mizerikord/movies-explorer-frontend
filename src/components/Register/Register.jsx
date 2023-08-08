@@ -12,7 +12,7 @@ function Register(props) {
         formState: { errors, isValid },
         handleSubmit
     } = useForm({
-        mode: "onBlur"
+        mode: "onChange"
     });
 
     function handleFormSubmit(data) {
@@ -42,6 +42,14 @@ function Register(props) {
                             pattern: {
                                 value: /^[а-яА-ЯёЁa-zA-Z\-\ ]+$/,
                                 message: "Поле может содержать только: латиницу, кириллицу, пробел или дефис"
+                            },
+                            minLength:{
+                                value: 2,
+                                message: "Имя должно быть от 2 до 30 символов"
+                            },
+                            maxLength:{
+                                value: 30,
+                                message: "Имя должно быть от 2 до 30 символов"
                             }
                         })}
                     />
@@ -54,7 +62,7 @@ function Register(props) {
                         {...register("email", {
                             required: "Поле обязательно к заполнению",
                             pattern: {
-                                value: /^[-\w.]+@([A-z0-9][-A-z0-9]+\.)+[A-z]{2,4}$/,
+                                value: /^[a-zA-Z0-9]+@(?:[a-zA-Z0-9]+\.)+[A-z]{2,4}$/,
                                 message: "Некорректно введен адрес электронной почты"
                             }
                         })}

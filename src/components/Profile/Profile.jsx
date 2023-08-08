@@ -1,20 +1,25 @@
+import React from 'react';
 import { Link } from "react-router-dom";
 import './profile.css';
 import MenuPopup from '../MenuPopup/MenuPopup';
 import { useForm } from "react-hook-form";
+import { CurrentUserContext } from "../../context/CurrentUserContext";
 
 function Profile(props) {
+
+    const currentUser = React.useContext(CurrentUserContext);
 
     const {
         register,
         formState: { errors, isValid },
         handleSubmit,
-        reset
     } = useForm({
-        mode: "onBlur"
-    });
-
-
+        mode: "onChange",
+        defaultValues: {
+            name: currentUser.name,
+            email: currentUser.email,
+        }
+    })
 
     function handleFormSubmit(data) {
         props.onEdit({
@@ -42,11 +47,19 @@ function Profile(props) {
                                 pattern: {
                                     value: /^[а-яА-ЯёЁa-zA-Z\-\ ]+$/,
                                     message: "Поле может содержать только: латиницу, кириллицу, пробел или дефис"
+                                },
+                                minLength: {
+                                    value: 2,
+                                    message: "Имя должно быть от 2 до 30 символов"
+                                },
+                                maxLength: {
+                                    value: 30,
+                                    message: "Имя должно быть от 2 до 30 символов"
                                 }
                             })}
                         />
                     </label>
-                    <div>{errors?.name && <span className="elem-error">{errors?.name?.message || "Error!"}</span>}</div>
+                    <div className='elem-error-profile'>{errors?.name && <span className="elem-error">{errors?.name?.message || "Error!"}</span>}</div>
                     <label className="form__box">
                         <p className="input-name" lang="en">E-mail:</p>
                         <input type="email" name="email" className="form__elem form__elem_email" placeholder="Ваш e-mail"
@@ -59,10 +72,9 @@ function Profile(props) {
                             })}
                         />
                     </label>
-                    <div>{errors?.email && <span className="elem-error">{errors?.email?.message || "Error!"}</span>}</div>
+                    <div className='elem-error-profile'>{errors?.email && <span className="elem-error">{errors?.email?.message || "Error!"}</span>}</div>
                     <div className="profile-error-form">
-                        {props.message && <span className="error-message">{props.message}</span>}
-                    </div>
+                    </div >
                     <button className="profile-submit" disabled={isValid ? false : true}>Редактировать</button>
                 </form>
                 <Link to="/" className="profile-link leave-link" onClick={props.onSignOut}>Выйти из аккаунта</Link>

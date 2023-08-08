@@ -1,11 +1,8 @@
 import { useState, useEffect } from 'react';
-
-const SCREEN_M = 763;
-const SCREEN_D = 1200;
+import constants from './constants.js';
 
 function useResize() {
     const [width, setWidth] = useState(window.innerWidth);
-
 
     useEffect(() => {
         const handleResize = (event) => {
@@ -17,11 +14,12 @@ function useResize() {
         };
     }, []);
 
+
     return {
         width,
-        isScreenS: width < SCREEN_M,
-        isScreenM: SCREEN_M <= width && width < SCREEN_D,
-        isScreenD: width >= SCREEN_D,
+        isScreenS: width < constants.SCREEN_M,
+        isScreenM: constants.SCREEN_M <= width && width < constants.SCREEN_D,
+        isScreenD: width >= constants.SCREEN_D,
     }
 };
 

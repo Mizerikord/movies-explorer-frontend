@@ -7,21 +7,15 @@ import MenuPopup from '../MenuPopup/MenuPopup';
 
 function Movies(props) {
 
-    let movies = props.movies;
-
-    if (props.check) {
-        movies = movies.filter((elem) => {
-            if (elem.duration >= 40) {
-                return false
-            }
-            return elem
-        })
+    function handleSearchText(onSearch){
+        props.onSearch(onSearch.text);
+        localStorage.searchText = onSearch.text;
     }
 
     return (
         <main className='main'>
-            <SearchForm onSearch={props.onSearch} check={props.check} onCheck={props.onCheck}/>
-            <MoviesCardList cards={movies} onFavourite={props.onFavourite} onSaved={props.onSaved} isFavourite={props.isFavourite} />
+            <SearchForm onSearch={handleSearchText} check={props.check} onCheck={props.onCheck} parent={"movies"}/>
+            <MoviesCardList cards={props.movies} onFavourite={props.onFavourite} onSaved={props.onSaved} isFavourite={props.isFavourite} parent={"movies"}/>
             <Preloader />
             <MenuPopup isOpen={props.isOpen} onClose={props.onClose} />
         </main>

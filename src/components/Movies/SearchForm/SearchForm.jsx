@@ -6,16 +6,18 @@ function SearchForm(props) {
     const {
         register,
         formState: { errors, isValid },
-        handleSubmit
+        handleSubmit,
     } = useForm({
-        mode: "onSubmit"
+        mode: "onSubmit",
+        defaultValues: {
+            text: (props.parent === "movies"? localStorage.searchText : "")
+        } 
     });
 
     function handleFormSubmit(data) {
         props.onSearch({
             text: data.text.toLowerCase(),
         });
-        localStorage.searchText = data.text.toLowerCase();
     }
 
     const onSubmit = (data, e) => {

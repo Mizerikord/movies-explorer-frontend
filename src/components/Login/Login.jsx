@@ -12,7 +12,7 @@ function Login(props) {
         formState: { errors, isValid },
         handleSubmit
     } = useForm({
-        mode: "onBlur"
+        mode: "onChange"
     });
 
     function handleFormSubmit(data) {
@@ -38,9 +38,9 @@ function Login(props) {
                     <input
                         type="email" className="form-elem" placeholder='Ваша почта'
                         {...register("email", {
-                            required: "Поле обязательно к заполнению",
+                            required: "Это поле обязательно к заполнению",
                             pattern: {
-                                value: /^[-\w.]+@([A-z0-9][-A-z0-9]+\.)+[A-z]{2,4}$/,
+                                value: /^[a-zA-Z0-9]+@(?:[a-zA-Z0-9]+\.)+[A-z]{2,4}$/,
                                 message: "Некорректно введен адрес электронной почты"
                             }
                         })}
