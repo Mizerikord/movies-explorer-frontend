@@ -9,7 +9,6 @@ function Movies(props) {
 
     function handleSearchText(onSearch){
         props.onSearch(onSearch.text);
-        localStorage.searchText = onSearch.text;
     }
 
     return (

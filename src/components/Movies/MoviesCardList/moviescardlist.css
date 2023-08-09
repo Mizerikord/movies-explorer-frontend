@@ -38,7 +38,7 @@
     cursor: pointer;
 }
 
-@media screen and (max-width: 810px) {
+@media screen and (max-width: 1216px) {
     .cards__container {
         max-width: 708px;
         grid-template-columns: repeat(auto-fit, minmax(339px, 1fr));
@@ -54,7 +54,7 @@
     }
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 762px) {
     .cards {
         width: 100%;
         margin: 41px auto 0;

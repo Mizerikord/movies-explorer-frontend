@@ -5,6 +5,7 @@ import SearchForm from '../Movies/SearchForm/SearchForm';
 import MenuPopup from '../MenuPopup/MenuPopup';
 
 function SavedMovies(props) {
+    console.log(props.cards);
 
     function handleSearchText(onSearch){
         props.onSearch(onSearch.text);

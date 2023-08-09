@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Routes, useNavigate, useLocation } from 'react-router-dom';
+import { Route, Routes, useNavigate, Navigate, useLocation } from 'react-router-dom';
 import './App.css';
 import Main from './Main/Main';
 import Errors from './Errors/Errors';
@@ -26,13 +26,14 @@ function App() {
   const [loggedIn, setloggedIn] = useState(false);
   const [isTokenVerified, setIsTokenVerified] = useState(false);
 
+  const [isAllMovies, setIsAllMovies] = useState([]);
   const [searchMovies, setSearchMovies] = useState([]);
   const [movies, setMovies] = useState([]);
 
   const [isChecked, setIsChecked] = useState(false);
   const [isSavedChecked, setIsSavedChecked] = useState(false);
 
-  const [isSearchFavourite, setSearchFavourite] = useState([]);
+  const [isAllSearchFavourite, setAllSearchFavourite] = useState([]);
   const [isFavourite, setFavourite] = useState([]);
   const [isFilteredFavourite, setIsFilteredFavourite] = useState([]);
 
@@ -57,7 +58,9 @@ function App() {
             setcurrentUser(data);
             setloggedIn(true);
             getSavedMovies();
-            setIsTokenVerified(true)
+            getAllMovie();
+            setFavourite(isAllSearchFavourite);
+            setIsTokenVerified(true);
           } else {
             setloggedIn(true);
           }
@@ -117,9 +120,9 @@ function App() {
       }
     }
     if (location.pathname === "/saved-movies") {
-      getSavedMovies();
-      setFavourite(isSearchFavourite);
-      setIsFilteredFavourite(isSearchFavourite);
+      setAllSearchFavourite(isAllSearchFavourite)
+      setFavourite(isAllSearchFavourite);
+      setIsFilteredFavourite(isAllSearchFavourite);
     }
     setMessage("");
   }, [location])
@@ -185,39 +188,63 @@ function App() {
     setSearchMovies([]);
     setFavourite([]);
     setIsFilteredFavourite([]);
-    setSearchFavourite([]);
+    setAllSearchFavourite([]);
+    setIsAllMovies([]);
     setSearchMovies([]);
     navigate('/');
   }
 
-  //Получение списка фильмов
-  function handleSearchMovies(data) {
+  //получаем сохраненные фильмы
+  function getSavedMovies() {
+    setIsLoading(true);
+    MainApi.getMovies()
+      .then((res) => {
+        setAllSearchFavourite(res);
+        setFavourite(res)
+        setIsLoading(false);
+      })
+      .catch(err => {
+        console.log(err.status);
+        setIsLoading(false);
+      })
+  }
+
+  function getAllMovie() {
     setIsLoading(true);
     movieApi.getMovies()
       .then((movies) => {
-        const result = filterOnSearch(movies, data);
-        if (result.length === 0) {
-          setMessage("К сожалению, ничего не нашлось ):")
-          setMovies(filterOnShort(isChecked, result));
-          localStorage.short = isChecked;
-          localStorage.movies = JSON.stringify(result);
-          return;
-        }
+        setIsAllMovies(movies);
         setIsLoading(false);
-        localStorage.movies = JSON.stringify(filterOnShort(isChecked, result));
-        localStorage.short = isChecked;
-        setSearchMovies(result);
-        setMovies(filterOnShort(isChecked, result));
       })
-      .catch((res) => {
-        console.log(res)
+      .catch((err) => {
+        console.log(err);
+        setMessage("При получении данных от сервиса произошла ошибка, попробуйте обновить страницу")
       })
+  }
+
+  //Получение списка фильмов по данным поиска
+  function handleSearchMovies(data) {
+    localStorage.short = isChecked;
+    localStorage.searchText = data;
+    setIsLoading(true);
+    const filteredMovies = isAllMovies;
+    const result = filterOnSearch(filteredMovies, data.toLowerCase());
+    if (result.length === 0) {
+      setMessage("К сожалению, ничего не нашлось ):");
+      localStorage.movies = JSON.stringify(result);
+      return
+    }
+    localStorage.movies = JSON.stringify(filterOnShort(isChecked, result));
+    setSearchMovies(result);
+    setMovies(filterOnShort(isChecked, result));
+    setIsLoading(false);
   }
 
   //Поиск из сохраненных видео
   function handleSearchSavedMovies(data) {
     setIsLoading(true);
-    const result = filterOnSearch(isSearchFavourite, data);
+    const filteredSearchMovies = isAllSearchFavourite;
+    const result = filterOnSearch(filteredSearchMovies, data.toLowerCase());
     if (result.length === 0) {
       setMessage("К сожалению, ничего не нашлось ):")
       setFavourite(result);
@@ -226,20 +253,6 @@ function App() {
     setIsFilteredFavourite(result);
     setFavourite(filterOnShort(isSavedChecked, result));
     setIsLoading(false);
-  }
-
-  //получаем сохраненные фильмы
-  function getSavedMovies() {
-    setIsLoading(true);
-    MainApi.getMovies()
-      .then((res) => {
-        setSearchFavourite(res);
-        setIsLoading(false);
-      })
-      .catch(err => {
-        console.log(err.status);
-        setIsLoading(false);
-      })
   }
 
   //Фильтрация по поисковой строке
@@ -252,7 +265,8 @@ function App() {
         elem.image = constants.imgUrl + elem.image.url;
       }
       //делаем регистронезависымый поиск
-      const searchElem = Object.values(elem).join("").toLowerCase();
+      console.log(elem);
+      const searchElem = elem.nameRU.toLowerCase();
       //для лучшего результата ищем данные по всем полям
       return searchElem.includes(searchText);
     })
@@ -295,20 +309,26 @@ function App() {
 
   //Добавление карточки в избранное и удаление
   function handleToggleStatusCard(movieCard) {
-    const filterFavourite = isSearchFavourite;
-    if (isSearchFavourite.some(i => i.movieId === movieCard.movieId)) {
-      const [deletedCard] = filterFavourite.filter((elem) => elem.movieId === movieCard.movieId)
+    setIsLoading(true);
+    const filteredFavourite = isAllSearchFavourite;
+    if (isAllSearchFavourite.some(i => i.movieId === movieCard.movieId)) {
+      const [deletedCard] = filteredFavourite.filter((elem) => elem.movieId === movieCard.movieId)
+      //запрос на удаление карточки
       MainApi.deleteMovie(deletedCard)
         .then(res => {
-          let movieId = isSearchFavourite.map(elem => {
-            return elem.movieId
-          }).indexOf(res.data.movieId);
-          isSearchFavourite.splice(movieId, 1);
-          setSearchFavourite(isSearchFavourite);
-          setFavourite(filterFavourite.filter((elem) => !(elem.movieId === movieCard.movieId)));
+          let moviePosition = isAllSearchFavourite
+            .map(elem => { return elem.movieId })
+            .indexOf(res.data.movieId);
+          isAllSearchFavourite.splice(moviePosition, 1);
+          setAllSearchFavourite(isAllSearchFavourite);
+          setFavourite(filteredFavourite.filter((elem) => !(elem.movieId === movieCard.movieId)));
+          setIsLoading(false);
           return;
         })
-        .catch(res => console.log(res.status));
+        .catch(res => {
+          console.log(res.status)
+          setMessage("При удалении видео произошла ошибка");
+        });
       return;
     }
     MainApi.postNewMovie({
@@ -330,11 +350,15 @@ function App() {
       .then((newMovie) => {
         //обновляем данные
         newMovie.movieId = movieCard.movieId;
-        isSearchFavourite.push(newMovie);
-        setSearchFavourite(isSearchFavourite);
+        isAllSearchFavourite.push(newMovie);
+        setAllSearchFavourite(isAllSearchFavourite);
         setMovies(JSON.parse(localStorage.movies));
+        setIsLoading(false);
       })
-      .catch(res => console.log(res.status))
+      .catch(res => {
+        console.log(res.status)
+        setMessage("При добавлении видео произошла ошибка");
+      })
   }
 
   //Очищаем сообщения об ошибках в профиле
@@ -348,8 +372,8 @@ function App() {
       <CurrentUserContext.Provider value={currentUser}>
         <Header onMenuPopup={handleMenuPopup} loggedIn={loggedIn} />
         <Routes>
-          <Route path="/signin" element={<Login onLogin={handleUserAutorization} />} />
-          <Route path="/signup" element={<Register onRegister={handleUserRegistration} />} />
+          <Route path="/signin" element={loggedIn ? <Navigate to="/movies" replace/> : <Login onLogin={handleUserAutorization} />} />
+          <Route path="/signup" element={loggedIn ? <Navigate to="/movies" replace/> : <Register onRegister={handleUserRegistration} />} />
           <Route
             path="/"
             element={<Main
@@ -366,7 +390,7 @@ function App() {
               check={isChecked}
               onCheck={handleChecked}
               onFavourite={handleToggleStatusCard}
-              isFavourite={isSearchFavourite}
+              isFavourite={isAllSearchFavourite}
             />} />
           <Route
             path="/saved-movies"
@@ -377,7 +401,7 @@ function App() {
               check={isSavedChecked}
               onSearch={handleSearchSavedMovies}
               onFavourite={handleToggleStatusCard}
-              isFavourite={isSearchFavourite}
+              isFavourite={isAllSearchFavourite}
               cards={isFavourite} />
             } />
           <Route

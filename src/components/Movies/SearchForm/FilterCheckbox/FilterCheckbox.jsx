@@ -3,7 +3,6 @@ import React from 'react';
 function FilterCheckbox(props) {
 
     function saveCheckedPosition(){
-        console.log(props.check);
         props.onCheck();
     }
 

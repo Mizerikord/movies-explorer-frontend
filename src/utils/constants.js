@@ -1,7 +1,7 @@
 const constants = {
     short: 40,
     SCREEN_M: 763,
-    SCREEN_D: 1200,
+    SCREEN_D: 1217,
     maxCards_s: 5,
     maxCards_m: 8,
     maxCards_d: 12,

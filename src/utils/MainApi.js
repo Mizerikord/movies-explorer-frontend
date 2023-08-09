@@ -96,12 +96,14 @@ class MainApi {
 }
 
 const mainApi = new MainApi({
-    baseUrl: 'https://api.diplom.sss.nomoreparties.sbs',
+    // baseUrl: 'https://api.diplom.sss.nomoreparties.sbs',
+    baseUrl: 'http://localhost:3001',
     headers: {
         'authorization': `Bearer ${localStorage.getItem('jwt')}`,
         'Content-Type': 'application/json'
     },
-    auth: 'https://api.diplom.sss.nomoreparties.sbs'
+    // auth: 'https://api.diplom.sss.nomoreparties.sbs'
+    auth: 'http://localhost:3001'
 });
 
 export default mainApi

@@ -16,7 +16,7 @@ function SearchForm(props) {
 
     function handleFormSubmit(data) {
         props.onSearch({
-            text: data.text.toLowerCase(),
+            text: data.text,
         });
     }
 

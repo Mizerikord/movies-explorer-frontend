@@ -71,7 +71,7 @@
     background-color: #FAFAFA;
     font-family: 'Inter', 'Arial', 'Helvetica', sans-serif;
     font-size: 13px;
-    font-weight: 400;
+    font-weight: 500;
     line-height: 16px;
     letter-spacing: 0em;
     text-align: center;
@@ -128,6 +128,12 @@
 
 .elem-error-profile{
     height: 17px;
+}
+
+.profile-invalid{
+    color: #CCCCCC;
+    cursor: auto;
+    font-weight: 400;
 }
 
 @media screen and (max-width: 810px) {
