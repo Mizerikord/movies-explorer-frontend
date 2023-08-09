@@ -62,7 +62,7 @@ function App() {
             setFavourite(isAllSearchFavourite);
             setIsTokenVerified(true);
           } else {
-            setloggedIn(true);
+            setloggedIn(false);
           }
         })
         .catch((err) => {
@@ -200,6 +200,7 @@ function App() {
     MainApi.getMovies()
       .then((res) => {
         setAllSearchFavourite(res);
+        setIsFilteredFavourite(res);
         setFavourite(res)
         setIsLoading(false);
       })
@@ -265,7 +266,6 @@ function App() {
         elem.image = constants.imgUrl + elem.image.url;
       }
       //делаем регистронезависымый поиск
-      console.log(elem);
       const searchElem = elem.nameRU.toLowerCase();
       //для лучшего результата ищем данные по всем полям
       return searchElem.includes(searchText);
@@ -326,7 +326,7 @@ function App() {
           return;
         })
         .catch(res => {
-          console.log(res.status)
+          console.log(res)
           setMessage("При удалении видео произошла ошибка");
         });
       return;
@@ -352,7 +352,6 @@ function App() {
         newMovie.movieId = movieCard.movieId;
         isAllSearchFavourite.push(newMovie);
         setAllSearchFavourite(isAllSearchFavourite);
-        setMovies(JSON.parse(localStorage.movies));
         setIsLoading(false);
       })
       .catch(res => {

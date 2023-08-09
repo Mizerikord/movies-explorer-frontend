@@ -2,7 +2,6 @@ import { Route, Routes } from 'react-router-dom';
 import './errors.css';
 
 function Errors(props) {
-    console.log("я сюда попал");
 
     function handleClick() {
         props.navigate(-1)

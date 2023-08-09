@@ -42,7 +42,6 @@ function Profile(props) {
             return "Изменяемые данные должны отличаться от текущих"
         }
     }
-    console.log(formState);
 
     useEffect(() => {
         formState.isValid && clearErrors(["name", "email"]);

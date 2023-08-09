@@ -36,6 +36,7 @@
     font-weight: 500;
     line-height: 18px;
     text-align: left;
+    max-width: 286px;
 }
 
 .card-time {
@@ -61,10 +62,11 @@
     outline: none;
 }
 
-.card-to-favourite_active{
+.card-to-favourite_active {
     background-image: url('../../../images/favourite.svg');
 }
-.card-to-favourite_delete{
+
+.card-to-favourite_delete {
     background-image: url('../../../images/delete.svg');
 }
 
@@ -74,7 +76,7 @@
     width: 100%;
 }
 
-.trailer-link{
+.trailer-link {
     text-decoration: none;
     width: 100%;
 }
@@ -89,6 +91,10 @@
     .card-img {
         height: 190px;
     }
+
+    .card-title {
+        max-width: 260px;
+    }
 }
 
 @media screen and (max-width: 500px) {
@@ -99,6 +105,10 @@
 
     .card-img {
         height: 168px;
+    }
+
+    .card-title {
+        max-width: 260px;
     }
 
 }
