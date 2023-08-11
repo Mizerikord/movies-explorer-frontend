@@ -56,7 +56,7 @@
     margin: 5px 5px 0 0;
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 810px) {
     .student__portfolio {
         margin: 91px 0;
         width: 100%;

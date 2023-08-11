@@ -1,12 +1,15 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
 
-function FilterCheckbox() {
+function FilterCheckbox(props) {
+
+    function saveCheckedPosition(){
+        props.onCheck();
+    }
 
     return (
         <div className="change-box">
             <label className="switch">
-                <input type="checkbox" id="" className="checkbox"  />
+                <input type="checkbox" className="checkbox" checked={props.check} onChange={saveCheckedPosition}/>
                 <span className="slider round"></span>
             </label>
             <p className="search-change-text">Короткометражки</p>

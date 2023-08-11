@@ -27,3 +27,10 @@
     transition: 0.5s;
     opacity: 80%;
 }
+
+.error-form{
+    height: 205px;
+    border: 1px solid red;
+    display: flex;
+    flex-direction: column;
+}

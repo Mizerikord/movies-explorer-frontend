@@ -1,18 +1,44 @@
 import React from 'react';
 import FilterCheckbox from './FilterCheckbox/FilterCheckbox';
+import { useForm } from "react-hook-form";
 
-function SearchForm() {
+function SearchForm(props) {
+    const {
+        register,
+        formState: { errors, isValid },
+        handleSubmit,
+    } = useForm({
+        mode: "onSubmit",
+        defaultValues: {
+            text: (props.parent === "movies"? localStorage.searchText : "")
+        } 
+    });
 
+    function handleFormSubmit(data) {
+        props.onSearch({
+            text: data.text,
+        });
+    }
+
+    const onSubmit = (data, e) => {
+        e.preventDefault();
+        handleFormSubmit(data);
+    }
+    
     return (
         <section className="search" aria-label="Поиск">
             <div className="search__area">
-                <form name="search" className="search-box" noValidate>
-                    <input type="text" className="search-elem" placeholder="Фильм"/>
-                    <button type="submit" className="search-sbmt btn-blackout" value=''/>
+                <form name="search" className="search-box" onSubmit={handleSubmit(onSubmit)}>
+                    <input type="text" className="search-elem" placeholder="Фильм"
+                        {...register("text", {
+                            required: "Нужно ввести ключевое слово"
+                        })}
+                    />
+                    <button type="submit" className="search-sbmt btn-blackout" value='' />
                 </form>
-                <FilterCheckbox />
+                <FilterCheckbox check={props.check} onCheck={props.onCheck} />
             </div>
-            <div className="search__void"></div>
+            <div className="search__void">{errors?.text && <span className="elem-error">{errors?.text?.message || "Error!"}</span>}</div>
         </section>
     );
 }

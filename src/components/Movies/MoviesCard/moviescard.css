@@ -36,6 +36,7 @@
     font-weight: 500;
     line-height: 18px;
     text-align: left;
+    max-width: 286px;
 }
 
 .card-time {
@@ -55,6 +56,18 @@
     height: 30px;
     cursor: pointer;
     transition: 0.5s;
+    background-image: url('../../../images/none-favourite.svg');
+    border: none;
+    border-radius: 50%;
+    outline: none;
+}
+
+.card-to-favourite_active {
+    background-image: url('../../../images/favourite.svg');
+}
+
+.card-to-favourite_delete {
+    background-image: url('../../../images/delete.svg');
 }
 
 .card-img {
@@ -63,7 +76,12 @@
     width: 100%;
 }
 
-@media screen and (max-width: 800px) {
+.trailer-link {
+    text-decoration: none;
+    width: 100%;
+}
+
+@media screen and (max-width: 810px) {
     .card {
         max-width: 339px;
         max-height: 258px;
@@ -72,6 +90,10 @@
 
     .card-img {
         height: 190px;
+    }
+
+    .card-title {
+        max-width: 260px;
     }
 }
 
@@ -83,6 +105,10 @@
 
     .card-img {
         height: 168px;
+    }
+
+    .card-title {
+        max-width: 260px;
     }
 
 }
