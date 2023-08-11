@@ -65,10 +65,14 @@ function App() {
             setIsTokenVerified(true);
           } else {
             setloggedIn(false);
+            localStorage.removeItem('jwt');
+            handleSignOut();
           }
         })
         .catch((err) => {
           console.log(err);
+          localStorage.removeItem('jwt');
+          handleSignOut();
         })
     }
     handleCheckToken();
