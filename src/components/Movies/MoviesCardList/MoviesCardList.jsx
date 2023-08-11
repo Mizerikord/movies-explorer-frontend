@@ -1,14 +1,15 @@
 import React, { useEffect, useState, useRef } from 'react';
 import MoviesCard from '../MoviesCard/MoviesCard'
-import { CurrentUserContext } from "../../../context/CurrentUserContext";
 import resize from '../../../utils/use-resize';
 import constants from '../../../utils/constants';
+import { useLocation } from 'react-router-dom';
 
 function MoviesCardList(props) {
 
-    const currentUser = React.useContext(CurrentUserContext);
+    let location = useLocation();
 
-    let [count, setCount] = useState(0);
+    // const [count, setCount] = useState(0);
+    let count = props.count;
 
     let rowEnd = useRef(false);
 
@@ -27,14 +28,23 @@ function MoviesCardList(props) {
         if (isScreenS) {
             let small = constants.maxCards_s;
             small += count * constants.add_sm;
+            if (location.pathname === "/saved-movies") {
+                return cards;
+            }
             return cards = cards.toSpliced(small, cards.length);
         } else if (isScreenM) {
             let medium = constants.maxCards_m;
             medium += count * constants.add_sm;
+            if (location.pathname === "/saved-movies") {
+                return cards;
+            }
             return cards = cards.toSpliced(medium, cards.length);
         } else if (isScreenD) {
             let desktop = constants.maxCards_d;
             desktop += count * constants.add_d;
+            if (location.pathname === "/saved-movies") {
+                return cards;
+            }
             return cards = cards.toSpliced(desktop, cards.length);
         }
     }
@@ -47,9 +57,7 @@ function MoviesCardList(props) {
     let rendercounter = 1;
 
     //каунтер для отрисовки рядов карточек при клике на "еще"
-    function handleAddCards() {
-        setCount(count + 1)
-    }
+    
 
     if (typeof props.cards === String) {
         return (
@@ -60,6 +68,10 @@ function MoviesCardList(props) {
             </section>
         );
     }
+    function handleAddCards(){
+        props.addCards();
+    }
+
     return (
         <section className="cards" aria-label="Кинопоиск">
             <ul className="cards__container">

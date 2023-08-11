@@ -2,10 +2,10 @@ import React from 'react';
 import { Link, useLocation } from "react-router-dom";
 
 function MoviesCard(props) {
-
     let location = useLocation();
 
     const card = props.card;
+
 
     function convertDuration(time) {
         const min = time % 60;

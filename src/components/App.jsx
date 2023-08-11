@@ -36,10 +36,12 @@ function App() {
   const [isAllSearchFavourite, setAllSearchFavourite] = useState([]);
   const [isFavourite, setFavourite] = useState([]);
   const [isFilteredFavourite, setIsFilteredFavourite] = useState([]);
+  const [isSearch, setIsSearch] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
 
   const [message, setMessage] = useState("");
+  const [count, setCount] = useState(0);
 
   const navigate = useNavigate();
   let location = useLocation();
@@ -114,15 +116,17 @@ function App() {
     if (location.pathname === "/movies") {
       setIsChecked(localStorage.short === "true" ? true : false)
       if (localStorage.movies != undefined) {
-        const findedMovies = JSON.parse(localStorage.movies);
-        setMovies(findedMovies);
-        setSearchMovies(findedMovies);
+        const localMovies = JSON.parse(localStorage.movies);
+        // setMovies(findedMovies);
+        setSearchMovies(localMovies);
+        setMovies(filterOnShort(localStorage.short === "true" ? true : false, localMovies));
       }
     }
     if (location.pathname === "/saved-movies") {
       setAllSearchFavourite(isAllSearchFavourite)
       setFavourite(isAllSearchFavourite);
       setIsFilteredFavourite(isAllSearchFavourite);
+      setIsSavedChecked(false);
     }
     setMessage("");
   }, [location])
@@ -179,10 +183,7 @@ function App() {
   //Выход из аккаунта
   function handleSignOut() {
     setloggedIn(false);
-    localStorage.removeItem('jwt');
-    localStorage.removeItem('movies');
-    localStorage.removeItem('short');
-    localStorage.removeItem('searchText');
+    localStorage.clear();
     setMessage("");
     setMovies([]);
     setSearchMovies([]);
@@ -219,19 +220,20 @@ function App() {
       })
       .catch((err) => {
         console.log(err);
-        setMessage("При получении данных от сервиса произошла ошибка, попробуйте обновить страницу")
+        setMessage("Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз")
       })
   }
 
   //Получение списка фильмов по данным поиска
   function handleSearchMovies(data) {
-    localStorage.short = isChecked;
+    setCount(0);
     localStorage.searchText = data;
     setIsLoading(true);
     const filteredMovies = isAllMovies;
     const result = filterOnSearch(filteredMovies, data.toLowerCase());
     if (result.length === 0) {
       setMessage("К сожалению, ничего не нашлось ):");
+      setMovies(result);
       localStorage.movies = JSON.stringify(result);
       return
     }
@@ -243,6 +245,8 @@ function App() {
 
   //Поиск из сохраненных видео
   function handleSearchSavedMovies(data) {
+    setIsSearch(true);
+    setCount(0);
     setIsLoading(true);
     const filteredSearchMovies = isAllSearchFavourite;
     const result = filterOnSearch(filteredSearchMovies, data.toLowerCase());
@@ -259,7 +263,7 @@ function App() {
   //Фильтрация по поисковой строке
   function filterOnSearch(videoElem, searchText) {
     const result = videoElem.filter((elem) => {
-      if (elem["id"] != undefined) {
+      if (elem["id"] !== undefined) {
         //меняем данные подстать базе
         elem.movieId = elem.id;
         delete elem["id"];
@@ -289,10 +293,12 @@ function App() {
   function handleChecked() {
     if (isChecked) {
       setIsChecked(false);
+      localStorage.short = !isChecked;
       setMovies(filterOnShort(!isChecked, searchMovies));
       return;
     }
     setIsChecked(true);
+    localStorage.short = !isChecked;
     setMovies(filterOnShort(!isChecked, searchMovies));
   }
 
@@ -307,6 +313,14 @@ function App() {
     setFavourite(filterOnShort(!isSavedChecked, isFilteredFavourite));
   }
 
+  function deleteElem(arr, elem) {
+    let deletePosition = arr.map(item => {
+      return item.movieId
+    }).indexOf(elem.data.movieId);
+    arr.splice(deletePosition, 1);
+    return arr;
+  }
+
   //Добавление карточки в избранное и удаление
   function handleToggleStatusCard(movieCard) {
     setIsLoading(true);
@@ -316,12 +330,29 @@ function App() {
       //запрос на удаление карточки
       MainApi.deleteMovie(deletedCard)
         .then(res => {
-          let moviePosition = isAllSearchFavourite
-            .map(elem => { return elem.movieId })
-            .indexOf(res.data.movieId);
-          isAllSearchFavourite.splice(moviePosition, 1);
-          setAllSearchFavourite(isAllSearchFavourite);
-          setFavourite(filteredFavourite.filter((elem) => !(elem.movieId === movieCard.movieId)));
+          if (!isSearch) {
+            if(isSavedChecked){
+              setAllSearchFavourite(deleteElem(isAllSearchFavourite, res));
+              setIsFilteredFavourite(isAllSearchFavourite);
+              setFavourite(filterOnShort(isSavedChecked, isFilteredFavourite))
+              setIsLoading(false);
+              return;
+            }
+            setAllSearchFavourite(deleteElem(isAllSearchFavourite, res));
+            setFavourite(isAllSearchFavourite);
+            setIsLoading(false);
+            return;
+          }
+          if(isSavedChecked){
+            setAllSearchFavourite(deleteElem(isAllSearchFavourite, res));
+            setIsFilteredFavourite(deleteElem(isFilteredFavourite, res));
+            setFavourite(filterOnShort(isSavedChecked, isFilteredFavourite))
+            setIsLoading(false);
+            return;
+          }
+          setAllSearchFavourite(deleteElem(isAllSearchFavourite, res));
+          setIsFilteredFavourite(deleteElem(isFilteredFavourite, res));
+          setFavourite(deleteElem(isFavourite, res));
           setIsLoading(false);
           return;
         })
@@ -365,14 +396,18 @@ function App() {
     setMessage("");
     setIsLoading(false);
   }
+  //изменение количества карточек отображаемых на экране
+  function handleAddCards() {
+    setCount(count + 1)
+  }
 
   return (isTokenVerified &&
     <div className="page">
       <CurrentUserContext.Provider value={currentUser}>
         <Header onMenuPopup={handleMenuPopup} loggedIn={loggedIn} />
         <Routes>
-          <Route path="/signin" element={loggedIn ? <Navigate to="/movies" replace/> : <Login onLogin={handleUserAutorization} />} />
-          <Route path="/signup" element={loggedIn ? <Navigate to="/movies" replace/> : <Register onRegister={handleUserRegistration} />} />
+          <Route path="/signin" element={loggedIn ? <Navigate to="/movies" replace /> : <Login onLogin={handleUserAutorization} />} />
+          <Route path="/signup" element={loggedIn ? <Navigate to="/movies" replace /> : <Register onRegister={handleUserRegistration} />} />
           <Route
             path="/"
             element={<Main
@@ -390,6 +425,8 @@ function App() {
               onCheck={handleChecked}
               onFavourite={handleToggleStatusCard}
               isFavourite={isAllSearchFavourite}
+              addCards={handleAddCards}
+              count={count}
             />} />
           <Route
             path="/saved-movies"
@@ -401,7 +438,9 @@ function App() {
               onSearch={handleSearchSavedMovies}
               onFavourite={handleToggleStatusCard}
               isFavourite={isAllSearchFavourite}
-              cards={isFavourite} />
+              cards={isFavourite}
+              addCards={handleAddCards}
+              count={count} />
             } />
           <Route
             path="/profile"

@@ -13,7 +13,7 @@ function SavedMovies(props) {
     return (
         <>
             <SearchForm onSearch={handleSearchText} check={props.check} onCheck={props.onCheck}/>
-            <MoviesCardList cards={props.cards} isFavourite={props.isFavourite} onFavourite={props.onFavourite} onSaved={props.onSaved}/>
+            <MoviesCardList cards={props.cards} isFavourite={props.isFavourite} onFavourite={props.onFavourite} onSaved={props.onSaved} addCards={props.addCards} count={props.count}/>
             <Preloader />
             <MenuPopup isOpen={props.isOpen} onClose={props.onClose} />
         </>
